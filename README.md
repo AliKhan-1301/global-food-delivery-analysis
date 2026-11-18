@@ -82,7 +82,7 @@ Only 91 orders (1.1%) lose money. All are delivery orders under $4.05, so a $5 m
 
 ## Assumptions and limits
 
-- **Churn risk** means an order rated 2★ or lower. There's no customer ID, so real retention isn't observed.
+- **Churn risk** means an order rated 2.5★ or lower (the dataset's `Dissatisfied-ChurRisk-1to2Star` tier, which despite its name includes 2.5). There's no customer ID, so real retention isn't observed.
 - **Restaurant margin** is a modelled field. It is an exact function of order value and channel (R² = 1.000), so margin findings describe the dataset's cost model, not accounting data.
 - `customer_satisfaction_tier` and `primary_satisfaction_driver` are derived from the rating, so they're left out as predictors to avoid leakage. The LLM-written `cot_market_dynamics_rationale` column is dropped.
 - **The dataset is synthetic.** The findings describe how this data behaves. Real order logs would be needed to size the effects in a live market.
@@ -91,13 +91,13 @@ Only 91 orders (1.1%) lose money. All are delivery orders under $4.05, so a $5 m
 ## Repository
 
 ```
-data/        put the source CSV here (download from Kaggle, link below)
+data/        source CSV (Kaggle)
 notebooks/   food_delivery_analysis.ipynb, with all tests and outputs
 dashboards/  index.html, a self-contained interactive dashboard (filters, tooltips, table views, dark mode)
 figures/     charts used in this README
 ```
 
-To reproduce, download `global_food_delivery_enriched_market_2026.csv` from Kaggle into `data/`, then:
+To reproduce:
 
 ```bash
 pip install -r requirements.txt
