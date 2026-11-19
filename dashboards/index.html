@@ -11,25 +11,64 @@
   --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#7c7b76;
   --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
   --deemph:#c9c8c2; --accent-soft:#cde2fb; --critical:#c8322f;
+  --seq-1:#efc497; --seq-2:#eda061; --seq-3:#e27a35; --seq-4:#c9501c; --seq-5:#982b0d;
+  --good:#1a9a6c; --hero-a:#9c2f0d; --hero-b:#c2551a; --hero-c:#b8410f; --hero-ink:#fff8f2; --hero-sub:#ffe3cf;
+  --lift:0 6px 18px rgba(80,40,10,.12);
 }
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme="light"]){
     color-scheme:dark;
     --bg:#111110; --surface-1:#1a1a19; --surface-2:#242422; --grid:#2e2e2c; --border:#33332f;
     --text-primary:#f0efec; --text-secondary:#c3c2b7; --text-muted:#8f8e86;
     --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
     --deemph:#4a4a46; --accent-soft:#1c3a5e; --critical:#e66767;
+    --seq-1:#66391f; --seq-2:#7a3a17; --seq-3:#b5501d; --seq-4:#e6702f; --seq-5:#ffa262;
+    --good:#2bb582; --hero-a:#4a1a08; --hero-b:#6e2a0c; --hero-c:#5a200a; --hero-ink:#fff1e6; --hero-sub:#f3c9ab;
+    --lift:0 6px 18px rgba(0,0,0,.45);
   }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111110; --surface-1:#1a1a19; --surface-2:#242422; --grid:#2e2e2c; --border:#33332f;
+  --text-primary:#f0efec; --text-secondary:#c3c2b7; --text-muted:#8f8e86;
+  --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+  --deemph:#4a4a46; --accent-soft:#1c3a5e; --critical:#e66767;
+  --seq-1:#66391f; --seq-2:#7a3a17; --seq-3:#b5501d; --seq-4:#e6702f; --seq-5:#ffa262;
+  --good:#2bb582; --hero-a:#4a1a08; --hero-b:#6e2a0c; --hero-c:#5a200a; --hero-ink:#fff1e6; --hero-sub:#f3c9ab;
+  --lift:0 6px 18px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text-primary);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 48px}
-header h1{font-size:22px;margin:0 0 4px;font-weight:650;letter-spacing:-.01em}
-header p{margin:0;color:var(--text-secondary);max-width:820px}
+header{background:linear-gradient(115deg,var(--hero-a),var(--hero-b),var(--hero-c),var(--hero-a));background-size:300% 100%;animation:drift 22s ease-in-out infinite alternate;color:var(--hero-ink);border-radius:12px;padding:22px 24px}
+header h1{font-size:23px;margin:0 0 6px;font-weight:680;letter-spacing:-.01em;text-wrap:balance}
+header p{margin:0;color:var(--hero-sub);max-width:820px}
+header .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+header .chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px 11px;font-size:12.5px;font-variant-numeric:tabular-nums}
+@keyframes drift{from{background-position:0% 50%}to{background-position:100% 50%}}
+@keyframes growY{from{transform:scaleY(var(--s0,0))}to{transform:none}}
+@keyframes growX{from{transform:scaleX(var(--s0,0))}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+section:not([hidden]){animation:fadeUp .4s ease both}
+.chart path.bar{transform-box:fill-box;transform-origin:50% 100%;animation:growY .75s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms);transition:opacity .18s}
+.chart path.bar.h{transform-origin:0 50%;animation-name:growX}
+.chart text.val{animation:fadeIn .45s ease both;animation-delay:var(--dl,300ms)}
+.chart svg.dim .bar:not(.hot){opacity:.35}
+.chart svg .bar.sel{stroke:var(--text-primary);stroke-width:1.5}
+.scale{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:12px;color:var(--text-secondary);margin:-4px 0 14px}
+.scale i{display:inline-block;width:22px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.tile{transition:transform .18s ease,box-shadow .18s ease}
+.kpis .tile:hover,.lever .tile:hover{transform:translateY(-2px);box-shadow:var(--lift)}
+.tile .l .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+input[type=range]{accent-color:var(--seq-4)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:20px 0 18px}
 .tabs{display:inline-flex;background:var(--surface-2);border-radius:8px;padding:3px}
 .tabs button{border:0;background:transparent;color:var(--text-secondary);font:inherit;font-weight:550;padding:6px 14px;border-radius:6px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--surface-1);color:var(--text-primary);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.tabs button{transition:background .2s,color .2s}
+.tabs button[aria-selected="true"]{background:var(--surface-1);color:var(--text-primary);box-shadow:0 1px 2px rgba(0,0,0,.08),inset 0 -2px 0 var(--seq-4)}
+.tabs button:focus-visible,select:focus-visible,.reset:focus-visible,.tbtn:focus-visible{outline:2px solid var(--seq-4);outline-offset:2px}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
 .filters label{display:flex;gap:6px;align-items:center;color:var(--text-secondary);font-size:13px}
 select{font:inherit;font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-primary)}
@@ -64,7 +103,7 @@ table.t th{color:var(--text-secondary);font-weight:560}
 .note{font-size:12px;color:var(--text-muted);margin:6px 0 2px}
 .lever{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
 .lever .tile{background:var(--surface-2);border:0}
-input[type=range]{width:100%;accent-color:var(--series-1)}
+input[type=range]{width:100%}
 #tip{position:fixed;pointer-events:none;background:var(--surface-1);color:var(--text-primary);border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,.14);border-radius:6px;padding:7px 10px;font-size:12.5px;line-height:1.4;opacity:0;transition:opacity .08s;z-index:10;max-width:260px}
 #tip b{font-weight:620}
 footer{margin-top:22px;color:var(--text-muted);font-size:12px}
@@ -78,6 +117,7 @@ footer a{color:var(--text-secondary)}
 <header>
   <h1>Global Food Delivery 2026: where satisfaction and margin are lost</h1>
   <p>8,000 orders, 12 cities, 7 cuisines, 3 channels. Churn risk means an order rated 2.5★ or lower. Filters recompute every chart from the raw orders.</p>
+  <div class="chips"><span>8,000 orders</span><span>12 cities</span><span>7 cuisines</span><span>3 channels</span><span>Each extra minute: churn odds +9%</span></div>
 </header>
 
 <div class="bar">
@@ -101,6 +141,7 @@ footer a{color:var(--text-secondary)}
     <div class="tile"><div class="l">Delivery churn in the &gt;45 min or &gt;7 km zone</div><div class="v" id="k3"></div><div class="s" id="k3s"></div></div>
     <div class="tile"><div class="l">Discount spend, share of GMV</div><div class="v" id="k4"></div><div class="s" id="k4s"></div></div>
   </div>
+  <div class="scale" aria-label="Colour scale for churn risk"><span>Bar colour = churn risk:</span><span><i style="background:var(--seq-1)"></i>&lt;1%</span><span><i style="background:var(--seq-2)"></i>1–2.5%</span><span><i style="background:var(--seq-3)"></i>2.5–5%</span><span><i style="background:var(--seq-4)"></i>5–10%</span><span><i style="background:var(--seq-5)"></i>10%+</span></div>
   <div class="grid">
     <div class="card" data-chart="cTime"><div class="hd"><div><h3>Churn risk by fulfilment time</h3><p class="sub">Delivery orders, % rated ≤2.5★, by total minutes</p></div><button class="tbtn">Table</button></div><div class="chart"></div></div>
     <div class="card" data-chart="cDist"><div class="hd"><div><h3>Churn risk by delivery distance</h3><p class="sub">Delivery orders, % rated ≤2.5★, by km</p></div><button class="tbtn">Table</button></div><div class="chart"></div></div>
@@ -111,9 +152,9 @@ footer a{color:var(--text-secondary)}
       <h3>Lever: a 45-minute delivery promise</h3>
       <p class="sub">Model-implied, full dataset (logit in the notebook). Not affected by filters</p>
       <div class="lever">
-        <div class="tile"><div class="l">Delivery orders over 45 min</div><div class="v">1,088</div><div class="s">21% of delivery</div></div>
-        <div class="tile"><div class="l">Predicted churn-risk orders</div><div class="v">165 → 55</div><div class="s">with time capped at 45 min</div></div>
-        <div class="tile"><div class="l">Reduction</div><div class="v">−67%</div><div class="s">fund it from discount budget first</div></div>
+        <div class="tile"><div class="l">Delivery orders over 45 min</div><div class="v" data-count="1088" data-fmt="n">1,088</div><div class="s">21% of delivery</div></div>
+        <div class="tile"><div class="l">Predicted churn-risk orders</div><div class="v">165 → <span data-count="55" data-from="165" data-fmt="n">55</span></div><div class="s">with time capped at 45 min</div></div>
+        <div class="tile"><div class="l">Reduction</div><div class="v">−<span data-count="67" data-fmt="n">67</span>%</div><div class="s">fund it from discount budget first</div></div>
       </div>
       <p class="note">Discounts cost 11% of GMV with no measurable rating effect. With no customer IDs, their effect on order frequency can't be tested, so a holdout test should come before renewal.</p>
     </div>
@@ -123,15 +164,15 @@ footer a{color:var(--text-secondary)}
 <section id="restaurant" hidden>
   <div class="headline"><b>The delivery app costs restaurants about 17 points of margin.</b> For the same basket, restaurants keep about 45% on dine-in, 35% on pickup and 28% on the app. Moving app orders to pickup recovers about 7 points, enough to fund a pickup incentive.</div>
   <div class="kpis">
-    <div class="tile"><div class="l">Margin kept, dine-in</div><div class="v" id="r1"></div><div class="s" id="r1s"></div></div>
-    <div class="tile"><div class="l">Margin kept, pickup</div><div class="v" id="r2"></div><div class="s" id="r2s"></div></div>
-    <div class="tile"><div class="l">Margin kept, delivery app</div><div class="v" id="r3"></div><div class="s" id="r3s"></div></div>
+    <div class="tile"><div class="l"><span class="sw" style="background:var(--series-1)"></span>Margin kept, dine-in</div><div class="v" id="r1"></div><div class="s" id="r1s"></div></div>
+    <div class="tile"><div class="l"><span class="sw" style="background:var(--series-2)"></span>Margin kept, pickup</div><div class="v" id="r2"></div><div class="s" id="r2s"></div></div>
+    <div class="tile"><div class="l"><span class="sw" style="background:var(--series-3)"></span>Margin kept, delivery app</div><div class="v" id="r3"></div><div class="s" id="r3s"></div></div>
     <div class="tile"><div class="l">Loss-making orders</div><div class="v" id="r4"></div><div class="s" id="r4s"></div></div>
   </div>
   <div class="grid">
     <div class="card full" data-chart="cTier"><div class="hd"><div><h3>Restaurant margin by price tier and channel</h3><p class="sub">Average estimated net margin as % of order value</p></div><button class="tbtn">Table</button></div><div class="legend" id="tierLegend"></div><div class="chart"></div></div>
     <div class="card" data-chart="cFeeChurn"><div class="hd"><div><h3>Churn risk by delivery fee vs basket</h3><p class="sub">Delivery orders, fee as % of order value</p></div><button class="tbtn">Table</button></div><div class="chart"></div></div>
-    <div class="card" data-chart="cFeeLoss"><div class="hd"><div><h3>Loss-making orders by delivery fee vs basket</h3><p class="sub">Delivery orders. Every loss-maker is under $4.05, so a $5 minimum clears them</p></div><button class="tbtn">Table</button></div><div class="chart"></div></div>
+    <div class="card" data-chart="cFeeLoss"><div class="hd"><div><h3>Loss-making orders by delivery fee vs basket</h3><p class="sub">Delivery orders. Every loss-maker is under $4.05, so a $5 minimum clears them. Colour uses the same scale as churn risk</p></div><button class="tbtn">Table</button></div><div class="chart"></div></div>
     <div class="card full">
       <h3>Calculator: shift app orders to pickup</h3>
       <p class="sub">Uses the filtered orders: the pickup-vs-app margin gap applied to the average app basket</p>
@@ -160,6 +201,18 @@ const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).
 const pct = (v, d = 1) => (v * 100).toFixed(d) + '%';
 const usd = v => '$' + Math.round(v).toLocaleString('en-US');
 const fmtN = v => v.toLocaleString('en-US');
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+function tween(node, to, fmt, from) {
+  if (!Number.isFinite(to)) { node.textContent = '–'; node._v = undefined; return; }
+  const a = from != null ? from : (node._v != null ? node._v : 0); node._v = to;
+  if (RM.matches || a === to) { node.textContent = fmt(to); return; }
+  const t0 = performance.now(), dur = 650; cancelAnimationFrame(node._raf);
+  const step = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); node.textContent = fmt(a + (to - a) * e); if (k < 1) node._raf = requestAnimationFrame(step); };
+  node._raf = requestAnimationFrame(step);
+}
+const RISK = [0.01, 0.025, 0.05, 0.10];
+const risk = v => { let k = 0; while (k < RISK.length && v >= RISK[k]) k++; return css('--seq-' + (k + 1)); };
+const prevH = {};
 
 // ---------- filters ----------
 const F = { city: '', weather: '', peak: '' };
@@ -190,8 +243,13 @@ function groupStats(idx, key, nCats, metric) {
 
 // ---------- tooltip ----------
 const tip = document.getElementById('tip');
+document.addEventListener('mouseleave', () => { tip.style.opacity = 0; document.querySelectorAll('.chart svg.dim').forEach(x => { x.classList.remove('dim'); x.dataset.hg = ''; }); });
 document.addEventListener('mousemove', e => {
   const t = e.target.closest('[data-tip]');
+  const svg = t && t.closest('svg'), g = t && t.getAttribute('data-g');
+  document.querySelectorAll('.chart svg.dim').forEach(x => { if (x !== svg || g == null) { x.classList.remove('dim'); x.querySelectorAll('.hot').forEach(h => h.classList.remove('hot')); } });
+  if (svg && g != null && svg.dataset.hg !== g) { svg.querySelectorAll('.hot').forEach(h => h.classList.remove('hot')); svg.querySelectorAll(`[data-g="${g}"]`).forEach(h => h.classList.add('hot')); svg.classList.add('dim'); }
+  if (svg) svg.dataset.hg = g == null ? '' : g;
   if (!t) { tip.style.opacity = 0; return; }
   tip.innerHTML = t.dataset.tip; tip.style.opacity = 1;
   const r = tip.getBoundingClientRect();
@@ -232,9 +290,11 @@ function columns(id, cats, series, o) {
       const d = s.vals[ci], h = Math.max(0, ih * d.v / max), x = x0 + si * (bw + gap), y = m.t + ih - h;
       const color = typeof s.color === 'function' ? s.color(ci) : s.color;
       const tipTxt = `<b>${c}</b>${ns > 1 ? ' · ' + s.name : ''}<br>${o.label}: ${o.fmt(d.v)}<br>${fmtN(d.n)} orders${d.n < 30 ? ' (small sample)' : ''}`;
-      if (h > 0) svg.append(el('path', { d: colPath(x, y, bw, h), fill: color, 'data-tip': tipTxt }));
-      svg.append(el('rect', { x: x - 3, y: m.t, width: bw + 6, height: ih, fill: 'transparent', 'data-tip': tipTxt }));
-      if ((o.labelAll && (!o.labelSeries || o.labelSeries.includes(si))) || (o.labelIdx && o.labelIdx.includes(ci))) svg.append(el('text', { x: x + bw / 2, y: y - 5, 'text-anchor': 'middle', class: 'val' }, d.n ? o.fmt(d.v) : '–'));
+      const key = id + ':' + ci + ':' + si, first = !(key in prevH), p = prevH[key] || 0; prevH[key] = h;
+      const s0 = h > 0 ? Math.min(4, p / h) : 0, delay = first ? 60 * ci + 30 * si : 0;
+      if (h > 0) svg.append(el('path', { d: colPath(x, y, bw, h), fill: color, class: 'bar', 'data-g': ci + '-' + si, 'data-tip': tipTxt, style: `--s0:${s0};--d:${delay}ms` }));
+      svg.append(el('rect', { x: x - 3, y: m.t, width: bw + 6, height: ih, fill: 'transparent', 'data-g': ci + '-' + si, 'data-tip': tipTxt }));
+      if ((o.labelAll && (!o.labelSeries || o.labelSeries.includes(si))) || (o.labelIdx && o.labelIdx.includes(ci))) svg.append(el('text', { x: x + bw / 2, y: y - 5, 'text-anchor': 'middle', class: 'val', style: `--dl:${first ? delay + 450 : 250}ms` }, d.n ? o.fmt(d.v) : '–'));
     });
     svg.append(el('text', { x: m.l + band * ci + band / 2, y: H - m.b + 16, 'text-anchor': 'middle' }, c));
   });
@@ -254,10 +314,12 @@ function hbars(id, items, o) {
   items.forEach((it, k) => {
     const y = m.t + k * row, bh = Math.min(14, row - 6), w = Math.max(0, iw * it.v / max), by = y + (row - bh) / 2;
     const tipTxt = `<b>${it.name}</b><br>${o.label}: ${o.fmt(it.v)}<br>${fmtN(it.n)} orders${it.n < 30 ? ' (small sample)' : ''}`;
-    svg.append(el('rect', { x: 0, y, width: W, height: row, fill: 'transparent', 'data-tip': tipTxt }));
-    svg.append(el('text', { x: m.l - 8, y: y + row / 2 + 4, 'text-anchor': 'end', 'data-tip': tipTxt }, it.name));
-    if (w > 0) svg.append(el('path', { d: barPath(m.l, by, w, bh), fill: it.color, 'data-tip': tipTxt }));
-    svg.append(el('text', { x: m.l + w + 6, y: y + row / 2 + 4, class: 'val', 'data-tip': tipTxt }, it.n ? o.fmt(it.v) : '–'));
+    const key = id + ':' + it.name, first = !(key in prevH), p = prevH[key] || 0; prevH[key] = w;
+    const s0 = w > 0 ? Math.min(4, p / w) : 0, delay = first ? 45 * k : 0;
+    svg.append(el('rect', { x: 0, y, width: W, height: row, fill: 'transparent', 'data-g': k, 'data-tip': tipTxt }));
+    svg.append(el('text', { x: m.l - 8, y: y + row / 2 + 4, 'text-anchor': 'end', 'data-tip': tipTxt, style: it.sel ? 'fill:var(--text-primary);font-weight:620' : '' }, it.name));
+    if (w > 0) svg.append(el('path', { d: barPath(m.l, by, w, bh), fill: it.color, class: 'bar h' + (it.sel ? ' sel' : ''), 'data-g': k, 'data-tip': tipTxt, style: `--s0:${s0};--d:${delay}ms` }));
+    svg.append(el('text', { x: m.l + w + 6, y: y + row / 2 + 4, class: 'val', 'data-tip': tipTxt, style: `--dl:${first ? delay + 450 : 250}ms` }, it.n ? o.fmt(it.v) : '–'));
   });
   svg.append(el('line', { x1: m.l, x2: m.l, y1: m.t, y2: H - m.b, class: 'ax' }));
   if (o.ref != null) { const x = m.l + iw * o.ref / max; svg.append(el('line', { x1: x, x2: x, y1: m.t - 2, y2: H - m.b + 2, class: 'ref' })); }
@@ -271,40 +333,40 @@ const DISC = { e: [-0.01, 0, 10, 20, 100], c: ['None', '0–10%', '10–20%', '2
 const FEE = { e: [-0.01, .1, .25, .5, 1, 1e9], c: ['<10%', '10–25%', '25–50%', '50–100%', '>100%'] };
 const WORDER = ['Clear', 'Cloudy / Fog', 'Rainy', 'Heavy Rain / Storm'];
 const churn = i => C.churn[i], rating = i => C.rating[i], loss = i => C.margin[i] < 0 ? 1 : 0;
-const emph = hot => ci => hot.includes(ci) ? css('--series-1') : css('--deemph');
+const byRisk = vals => ci => risk(vals[ci].v);
 
 function renderPlatform() {
   const all = rows(), app = all.filter(isApp);
   const tot = all.reduce((s, i) => s + C.churn[i], 0), appCh = app.reduce((s, i) => s + C.churn[i], 0);
   const zone = app.filter(i => C.time[i] > 45 || C.dist[i] > 7), zoneCh = zone.reduce((s, i) => s + C.churn[i], 0);
   const disc = all.reduce((s, i) => s + C.disc[i], 0), gmv = all.reduce((s, i) => s + C.ov[i], 0);
-  k1.textContent = all.length ? pct(tot / all.length) : '–'; k1s.textContent = `${fmtN(tot)} of ${fmtN(all.length)} orders`;
-  k2.textContent = tot ? pct(appCh / tot, 0) : '–'; k2s.textContent = `app is ${all.length ? pct(app.length / all.length, 0) : '–'} of orders`;
-  k3.textContent = appCh ? pct(zoneCh / appCh, 0) : '–'; k3s.textContent = `zone is ${app.length ? pct(zone.length / app.length, 0) : '–'} of delivery orders`;
-  k4.textContent = gmv ? pct(disc / gmv) : '–'; k4s.textContent = `${usd(disc)} on ${usd(gmv)} GMV`;
+  tween(k1, all.length ? tot / all.length : NaN, v => pct(v)); k1s.textContent = `${fmtN(tot)} of ${fmtN(all.length)} orders`;
+  tween(k2, tot ? appCh / tot : NaN, v => pct(v, 0)); k2s.textContent = `app is ${all.length ? pct(app.length / all.length, 0) : '–'} of orders`;
+  tween(k3, appCh ? zoneCh / appCh : NaN, v => pct(v, 0)); k3s.textContent = `zone is ${app.length ? pct(zone.length / app.length, 0) : '–'} of delivery orders`;
+  tween(k4, gmv ? disc / gmv : NaN, v => pct(v)); k4s.textContent = `${usd(disc)} on ${usd(gmv)} GMV`;
 
   const tb = bandStats(app, TIME.e, 'time', churn);
   setTable('cTime', ['Minutes', 'Orders', 'Churn risk'], TIME.c.map((c, k) => [c, fmtN(tb[k].n), pct(tb[k].v)]));
-  columns('cTime', TIME.c, [{ name: 'Churn', color: emph([3, 4]), vals: tb }], { label: 'Churn risk', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'fulfilment minutes', aria: 'Churn risk by fulfilment time' });
+  columns('cTime', TIME.c, [{ name: 'Churn', color: byRisk(tb), vals: tb }], { label: 'Churn risk', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'fulfilment minutes', aria: 'Churn risk by fulfilment time' });
 
   const db = bandStats(app, DIST.e, 'dist', churn);
   setTable('cDist', ['Km', 'Orders', 'Churn risk'], DIST.c.map((c, k) => [c, fmtN(db[k].n), pct(db[k].v)]));
-  columns('cDist', DIST.c, [{ name: 'Churn', color: emph([3, 4]), vals: db }], { label: 'Churn risk', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'km', aria: 'Churn risk by distance' });
+  columns('cDist', DIST.c, [{ name: 'Churn', color: byRisk(db), vals: db }], { label: 'Churn risk', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'km', aria: 'Churn risk by distance' });
 
   const appNoW = rows('weather', isApp), wg = groupStats(appNoW, 'weather', K.weather_condition.length, churn);
-  const witems = WORDER.map(w => { const k = K.weather_condition.indexOf(w); return { name: w, n: wg[k].n, v: wg[k].v, color: w === 'Heavy Rain / Storm' ? css('--series-1') : css('--deemph') }; });
+  const witems = WORDER.map(w => { const k = K.weather_condition.indexOf(w); return { name: w, n: wg[k].n, v: wg[k].v, color: risk(wg[k].v) }; });
   setTable('cWeather', ['Weather', 'Orders', 'Churn risk'], witems.map(x => [x.name, fmtN(x.n), pct(x.v)]));
   hbars('cWeather', witems, { label: 'Churn risk', fmt: v => pct(v), left: 130, row: 30, aria: 'Churn risk by weather' });
 
   const noCity = rows('city'), cg = groupStats(noCity, 'city', K.metro_city.length, churn);
   const avg = noCity.length ? noCity.reduce((s, i) => s + C.churn[i], 0) / noCity.length : 0;
-  const citems = K.metro_city.map((c, k) => ({ name: c, n: cg[k].n, v: cg[k].v, color: F.city !== '' && +F.city === k ? css('--series-1') : css('--deemph') })).sort((a, b) => b.v - a.v);
+  const citems = K.metro_city.map((c, k) => ({ name: c, n: cg[k].n, v: cg[k].v, color: risk(cg[k].v), sel: F.city !== '' && +F.city === k })).sort((a, b) => b.v - a.v);
   setTable('cCity', ['City', 'Orders', 'Churn risk'], citems.map(x => [x.name, fmtN(x.n), pct(x.v)]));
   hbars('cCity', citems, { label: 'Churn risk', fmt: v => pct(v), ref: avg, row: 19, left: 84, aria: 'Churn risk by city' });
 
   const dd = bandStats(all, DISC.e, 'discPct', rating);
   setTable('cDisc', ['Discount', 'Orders', 'Avg rating'], DISC.c.map((c, k) => [c, fmtN(dd[k].n), dd[k].v.toFixed(2)]));
-  columns('cDisc', DISC.c, [{ name: 'Rating', color: css('--series-1'), vals: dd }], { max: 5, step: 1, label: 'Avg rating', fmt: v => v.toFixed(2) + '★', tick: v => v.toFixed(0) + '★', labelAll: true, xTitle: 'discount as % of order value', aria: 'Rating by discount depth' });
+  columns('cDisc', DISC.c, [{ name: 'Rating', color: css('--good'), vals: dd }], { max: 5, step: 1, label: 'Avg rating', fmt: v => v.toFixed(2) + '★', tick: v => v.toFixed(0) + '★', labelAll: true, xTitle: 'discount as % of order value', aria: 'Rating by discount depth' });
 }
 
 // ---------- restaurant view ----------
@@ -313,9 +375,9 @@ function renderRestaurant() {
   const all = rows(), app = all.filter(isApp);
   const ch = groupStats(all, 'channel', K.order_channel.length, mPct);
   const ab = groupStats(all, 'channel', K.order_channel.length, i => C.ov[i]);
-  [[r1, r1s, DINE], [r2, r2s, PICK], [r3, r3s, APP]].forEach(([v, s, k]) => { v.textContent = ch[k].n ? pct(ch[k].v, 1) : '–'; s.textContent = ch[k].n ? `${fmtN(ch[k].n)} orders, avg basket $${ab[k].v.toFixed(2)}` : 'no orders'; });
+  [[r1, r1s, DINE], [r2, r2s, PICK], [r3, r3s, APP]].forEach(([v, s, k]) => { tween(v, ch[k].n ? ch[k].v : NaN, x => pct(x, 1)); s.textContent = ch[k].n ? `${fmtN(ch[k].n)} orders, avg basket $${ab[k].v.toFixed(2)}` : 'no orders'; });
   const nl = all.filter(i => C.margin[i] < 0).length;
-  r4.textContent = fmtN(nl); r4s.textContent = all.length ? `${pct(nl / all.length)} of orders, all delivery` : '';
+  tween(r4, nl, v => fmtN(Math.round(v))); r4s.textContent = all.length ? `${pct(nl / all.length)} of orders, all delivery` : '';
 
   const chans = [[DINE, 'Dine-in', '--series-1'], [PICK, 'Pickup', '--series-2'], [APP, 'Delivery app', '--series-3']];
   tierLegend.innerHTML = chans.map(([, n, c]) => `<span><i style="background:var(${c})"></i>${n}</span>`).join('');
@@ -326,9 +388,9 @@ function renderRestaurant() {
 
   const fc = bandStats(app, FEE.e, 'feeRatio', churn), fl = bandStats(app, FEE.e, 'feeRatio', loss);
   setTable('cFeeChurn', ['Fee / basket', 'Orders', 'Churn risk'], FEE.c.map((c, k) => [c, fmtN(fc[k].n), pct(fc[k].v)]));
-  columns('cFeeChurn', FEE.c, [{ name: 'Churn', color: emph([2, 3, 4]), vals: fc }], { label: 'Churn risk', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'delivery fee ÷ order value', aria: 'Churn by fee ratio' });
+  columns('cFeeChurn', FEE.c, [{ name: 'Churn', color: byRisk(fc), vals: fc }], { label: 'Churn risk', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'delivery fee ÷ order value', aria: 'Churn by fee ratio' });
   setTable('cFeeLoss', ['Fee / basket', 'Orders', 'Loss-making'], FEE.c.map((c, k) => [c, fmtN(fl[k].n), pct(fl[k].v)]));
-  columns('cFeeLoss', FEE.c, [{ name: 'Loss', color: emph([4]), vals: fl }], { label: 'Loss-making orders', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'delivery fee ÷ order value', aria: 'Loss-making share by fee ratio' });
+  columns('cFeeLoss', FEE.c, [{ name: 'Loss', color: byRisk(fl), vals: fl }], { label: 'Loss-making orders', fmt: v => pct(v), tick: v => pct(v, 0), labelAll: true, xTitle: 'delivery fee ÷ order value', aria: 'Loss-making share by fee ratio' });
   renderCalc();
 }
 function renderCalc() {
@@ -339,9 +401,9 @@ function renderCalc() {
   const gap = ch[PICK].n && ch[APP].n ? ch[PICK].v - ch[APP].v : 0;
   const moved = Math.round(share * app.length), gain = moved * aov * gap;
   const totM = all.reduce((s, i) => s + C.margin[i], 0);
-  c1.textContent = usd(gain); c1s.textContent = `${fmtN(moved)} orders × $${aov.toFixed(2)} × ${pct(gap)} gap`;
-  c2.textContent = totM ? '+' + pct(gain / totM) : '–';
-  c3.textContent = '$' + (aov * gap).toFixed(2);
+  tween(c1, gain, usd); c1s.textContent = `${fmtN(moved)} orders × $${aov.toFixed(2)} × ${pct(gap)} gap`;
+  tween(c2, totM ? gain / totM : NaN, v => '+' + pct(v));
+  tween(c3, aov * gap, v => '$' + v.toFixed(2));
 }
 
 // ---------- wiring ----------
@@ -359,6 +421,7 @@ shift.oninput = renderCalc;
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 120); });
 render();
+document.querySelectorAll('[data-count]').forEach(n => tween(n, +n.dataset.count, v => fmtN(Math.round(v)), n.dataset.from != null ? +n.dataset.from : 0));
 </script>
 </body>
 </html>
